@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+body{
+    padding:20px;
+}
+
+input[type="text"]{
+    width:500px;
+}
+textarea{
+    min-width:500px;
+    min-height:300px;
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+ul > li{
+    margin-bottom:10px;
+}
+
+th,td{
+    vertical-align:top;
+    text-align:left;
+    padding:5px;
+}
+label{
+    line-height:1.2;
+}
+
+.news-description {
+    white-space:normal;
+    width:auto;
+}

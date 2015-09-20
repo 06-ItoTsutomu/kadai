@@ -108,7 +108,7 @@ $pdo = null;
     <section class="gallery">
         <div class="contents-heading bg-yellow">
             <h2 class="section-title text-center">
-                <span class="section-title">Gallery</span><span class="section-title__white section-title-ja text-center">ギャラリー</span
+                <span class="section-title">Gallery</span><span class="section-title__white section-title-ja text-center">ギャラリー</span>
             </h2>
         </div>
         <div class="inner contents-box">
