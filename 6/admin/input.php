@@ -1,6 +1,8 @@
+<?php include("session_status.php"); ?>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+<meta charset="utf-8">
     <title></title>
     <meta charset="UTF-8">
     <meta name="description" content="" />

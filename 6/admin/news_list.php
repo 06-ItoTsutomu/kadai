@@ -1,11 +1,9 @@
+<?php include("session_status.php"); ?>
 <?php
+
 $pdo = new PDO("mysql:host=localhost;dbname=cs_academy;charset=utf8", "root", "");
 $sql = "SELECT * FROM news";
-// $sql = "SELECT name FROM news";
-// $sql = "SELECT name, email FROM news";
-// $sql = "SELECT * FROM news where id = 1";
-// $sql = "SELECT * FROM news LIMIT 3";
-// $sql = "SELECT * FROM news ORDER BY id DESC";
+
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $results_pre = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -15,8 +13,9 @@ $i = 0;
 $pdo = null;
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+<meta charset="utf-8">
     <title></title>
     <meta charset="UTF-8">
     <meta name="description" content="" />

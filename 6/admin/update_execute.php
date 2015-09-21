@@ -1,3 +1,4 @@
+<?php include("session_status.php"); ?>
 <?php
 $id = $_POST["id"];
 $title = $_POST["title"];

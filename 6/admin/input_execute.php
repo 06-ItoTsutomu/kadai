@@ -1,3 +1,4 @@
+<?php include("session_status.php"); ?>
 <?php
 $id = $_POST["id"];
 $title = $_POST["title"];
@@ -20,8 +21,9 @@ if($result) {
 $pdo = null;
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+<meta charset="utf-8">
     <title></title>
     <meta charset="UTF-8">
     <meta name="description" content="" />

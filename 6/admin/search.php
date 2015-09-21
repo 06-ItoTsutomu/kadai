@@ -1,5 +1,8 @@
-<html>
+<?php include("session_status.php"); ?>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
+<meta charset="utf-8">
 </head>
 <body>
 <form action="login_execute.php" method="post">

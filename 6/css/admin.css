@@ -4,8 +4,9 @@ body{
     padding:20px;
 }
 
-input[type="text"]{
-    width:500px;
+input[type="text"],
+input[type="password"]{
+    width:300px;
 }
 textarea{
     min-width:500px;

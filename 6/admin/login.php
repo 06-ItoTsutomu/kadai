@@ -1,95 +1,40 @@
 <?php
-require 'password.php';
-// セッション開始
-session_start();
 
-$db['host'] = "hogehoge.ne.jp";  // DBサーバのurl
-$db['user'] = "ユーザID";
-$db['pass'] = "パスワード";
-$db['dbname'] = "データベース名";
-
-// エラーメッセージの初期化
-$errorMessage = "";
-
-// ログインボタンが押された場合
-if (isset($_POST["login"])) {
-  // １．ユーザIDの入力チェック
-  if (empty($_POST["userid"])) {
-    $errorMessage = "ユーザIDが未入力です。";
-  } else if (empty($_POST["password"])) {
-    $errorMessage = "パスワードが未入力です。";
+  if(isset($_GET["error"])){
+    if($_GET["error"]=="1" or $_GET["error"]=="2"){
+      echo "IDかパスワードが違います";
+    }else if($_GET["error"]=="3"){
+      echo "ログインして下さい";
+    }
   }
 
-  // ２．ユーザIDとパスワードが入力されていたら認証する
-  if (!empty($_POST["userid"]) && !empty($_POST["password"])) {
-    // mysqlへの接続
-    $mysqli = new mysqli($db['host'], $db['user'], $db['pass']);
-    if ($mysqli->connect_errno) {
-      print('<p>データベースへの接続に失敗しました。</p>' . $mysqli->connect_error);
-      exit();
-    }
-
-    // データベースの選択
-    $mysqli->select_db($db['dbname']);
-
-    // 入力値のサニタイズ
-    $userid = $mysqli->real_escape_string($_POST["userid"]);
-
-    // クエリの実行
-    $query = "SELECT * FROM db_user WHERE name = '" . $userid . "'";
-    $result = $mysqli->query($query);
-    if (!$result) {
-      print('クエリーが失敗しました。' . $mysqli->error);
-      $mysqli->close();
-      exit();
-    }
-
-    while ($row = $result->fetch_assoc()) {
-      // パスワード(暗号化済み）の取り出し
-      $db_hashed_pwd = $row['password'];
-    }
-
-    // データベースの切断
-    $mysqli->close();
-
-    // ３．画面から入力されたパスワードとデータベースから取得したパスワードのハッシュを比較します。
-    //if ($_POST["password"] == $pw) {
-    if (password_verify($_POST["password"], $db_hashed_pwd)) {
-      // ４．認証成功なら、セッションIDを新規に発行する
-      session_regenerate_id(true);
-      $_SESSION["USERID"] = $_POST["userid"];
-      header("Location: main.php");
-      exit;
-    }
-    else {
-      // 認証失敗
-      $errorMessage = "ユーザIDあるいはパスワードに誤りがあります。";
-    }
-  } else {
-    // 未入力なら何もしない
-  }
-}
-?>
-<html>
+ ?>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
+<meta charset="utf-8">
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
 <h1>ニュース管理ログイン</h1>
-  <form id="loginForm" name="loginForm" action="" method="POST">
-  <fieldset>
-  <legend>ログインフォーム</legend>
-  <div><?php echo $errorMessage ?></div>
-  <label for="userid">ユーザID</label><input type="text" id="userid" name="userid" value="<?php echo htmlspecialchars($_POST["userid"], ENT_QUOTES); ?>">
-  <br>
-  <label for="password">パスワード</label><input type="password" id="password" name="password" value="">
-  <br>
-  <input type="submit" id="login" name="login" value="ログイン">
-  </fieldset>
-  </form>
-<!-- <form action="login_execute.php" method="post">
-	ログイン名: <input type="text" name="name" value="" />
-	パスワード: <input type="password" name="password" value="" />
+<form action="login_execute.php" method="post">
+<table>
+  <tr>
+    <th><label for="name">ログイン名:</label></th>
+    <td><input type="text" name="name" id="name" value="" /></td>
+  </tr>
+  <tr>
+    <th><label for="password">パスワード:</label></th>
+    <td><input type="password" name="password" id="password" value="" /></td>
+  </tr>
+</table>
 	<input type="submit" />
-</form> -->
+</form>
 </body>
 </html>
