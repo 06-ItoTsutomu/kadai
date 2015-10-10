@@ -9,6 +9,52 @@ if(!empty($_SESSION["me"])){
   exit;
 }
 
+function getUser($email, $password, $dbh){
+  $sql = "select * from account where email = :email and password = :password limit 1";
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute(array(":email"=>$email, ":password"=>getSha1Password($password)));
+  $user = $stmt->fetch();
+  return $user ? $user : false;
+}
+
+if($_SERVER["REQUEST_METHOD"] != "POST"){
+  setToken();
+}else{
+  checkToken();
+
+  $email = $_POST["email"];
+  $password = $_POST["password"];
+
+  $dbh = connectDb();
+
+  $err=array();
+
+  if(!emailExists($email, $dbh)){
+    $err[email]="このメールアドレスは登録されていません";
+  }
+  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    $err[email]="メールアドレスの形式が正しくないです";
+  }
+  if($email==""){
+    $err[email]="メールアドレスを入力して下さい";
+  }
+
+  if(!$me = getUser($email, $password,$dbh)){
+    $err[password]="パスワードとメールアドレスが一致しません";
+  }
+
+  if($password==""){
+    $err[password]="パスワードを入力して下さい";
+  }
+
+  if(empty($err)){
+    session_regenerate_id(true);
+    $_SESSION["me"] = $me;
+    header("Location:".SITE_URL);
+    exit;
+  }
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -21,6 +67,7 @@ if(!empty($_SESSION["me"])){
   <meta property="og:type" content="chat"/>
   <meta property="og:description" content="BaaS（Milkcocoa）で作られたリアルタイムチャット"/>
   <title>ログイン画面</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
 </head>
 
@@ -31,8 +78,9 @@ if(!empty($_SESSION["me"])){
 
 <div class="container">
   <form action="" method="post">
-    <p>メールアドレス：<input type="text" name="email" value=""></p>
-    <p>パスワード：<input type="password" name="password" value=""></p>
+    <p>メールアドレス：<input type="text" name="email" value="<?php echo h($email); ?>"><?php echo h($err["email"]); ?></p>
+    <p>パスワード：<input type="password" name="password" value=""><?php echo h($err["password"]); ?></p>
+    <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
     <p><input type="submit" value="ログイン"><a href="signup.php">新規登録はこちら</a></p>
   </form>
 </div>

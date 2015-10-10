@@ -12,3 +12,28 @@ function connectDb(){
 function h($s){
   return htmlspecialchars($s, ENT_QUOTES,"UTF-8");
 }
+
+function setToken(){
+  $token=sha1(uniqid(mt_rand(),true));
+  $_SESSION["token"]=$token;
+}
+
+function checkToken(){
+//Chromeで動かないので一旦コメントアウト TODO
+//  if(empty($_SESSION["token"]) || ($_SESSION["token"] != $_POST["token"])){
+//    echo "不正なPOSTが行われました";
+//    exit;
+//  }
+};
+
+function emailExists($email, $dbh){
+  $sql="select * from account WHERE email = :email limit 1";
+  $stmt=$dbh->prepare($sql);
+  $stmt->execute(array(":email"=>$email));
+  $user=$stmt->fetch();
+  return $user ? true : false;
+}
+
+function getSha1Password($s){
+  return (sha1(PASSWORD_KEY.$s));
+}

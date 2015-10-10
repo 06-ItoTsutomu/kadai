@@ -19,12 +19,17 @@ $(function () {
     var name_html = '<p class="post-name">' + escapeHTML(message.value.name) + '</p>';
     var message_html = '<p class="post-text">' + escapeHTML(message.value.content) + '</p>';
     var date_html = '';
-    console.table(message);
     if (message.value.date) {
       date_html = '<p class="post-date">' + escapeHTML(new Date(message.value.date).toLocaleString()) + '</p>';
     }
+    if(message.value.name == login_name){
+      $("#" + last_message).before('<div id="' + message.id + '" class="post mypost">' + name_html + message_html + date_html + '</div>');
+    }else{
     $("#" + last_message).before('<div id="' + message.id + '" class="post">' + name_html + message_html + date_html + '</div>');
+    }
+
     last_message = message.id;
+
   }
 
   function post() {
@@ -51,6 +56,13 @@ $(function () {
       return false;
     }
   });
+
+  //$('#messages').each(".post",function(el){
+  // el.target.css("color","red");
+  //});
+  //$('.post').each(function(){
+  //  $(this).css("color","red");
+  //});
 });
 //インジェクション対策
 function escapeHTML(val) {

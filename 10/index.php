@@ -9,6 +9,14 @@ if(empty($_SESSION["me"])){
   exit;
 }
 
+$me = $_SESSION["me"];
+$dbh = connectDb();
+$users = array();
+
+$sql = "select * from account order by created desc";
+foreach($dbh->query($sql) as $row){
+  array_push($users, $row);
+}
 
 ?>
 <!DOCTYPE html>
@@ -21,10 +29,23 @@ if(empty($_SESSION["me"])){
   <meta property="og:type" content="chat"/>
   <meta property="og:description" content="BaaS（Milkcocoa）で作られたリアルタイムチャット"/>
   <title>Milkcocoaで作ったリアルタイムチャット</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
+  <script>
+    var login_name="<?php echo h($me['name']); ?>";
+    console.log("てすと" + login_name);
+  </script>
 </head>
 
 <body>
+<p>Logged in as <?php echo h($me["name"]); ?> | <a href="logout.php">[logout]</a></p>
+<h1>メンバー</h1>
+<ul>
+  <?php foreach ($users as $user): ?>
+  <li><a href="profile.php?id=<?php echo h($user['id']); ?>"><?php echo h($user[name]); ?></a></li>
+  <?php endforeach; ?>
+</ul>
+
 <div class="header">
   <h1 class="logo">Line</h1>
 </div>
@@ -33,14 +54,13 @@ if(empty($_SESSION["me"])){
   <div class="postarea cf">
 
     <div class="postarea-text">
-      <input name="" id="name" placeholder="名前を入力して下さい">
-      <textarea name="" id="content" cols="30" rows="10" placeholder="Enterで投稿"></textarea>
+      <input type="hidden" name="name" id="name" value="<?php echo h($me['name']); ?>">
+      <textarea name="content" id="content" rows="5" placeholder="Enterで投稿"></textarea>
     </div>
 
     <button id="post" class="postarea-button">投稿する</button>
   </div>
 </div>
-
 
 <div id="messages" class="content">
   <div id="dummy"></div>

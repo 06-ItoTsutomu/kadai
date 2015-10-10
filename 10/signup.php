@@ -4,29 +4,6 @@ require_once("functions.php");
 
 session_start();
 
-function setToken(){
-  $token=sha1(uniqid(mt_rand(),true));
-  $_SESSION["token"]=$token;
-}
-
-function checkToken(){
-  if(empty($_SESSION["token"]) || ($_SESSION["token"] != $_POST["token"])){
-    echo "不正なPOSTが行われました";
-    exit;
-  }
-};
-
-function emailExists($email, $dbh){
-  $sql="select * from user WHERE email = :email limit 1";
-  $stmt=$dbh->prepare($sql);
-  $stmt->execute(array(":email"=>$email));
-  $user=$stmt->fetch();
-  return $user ? true : false;
-}
-
-function getSha1Password($s){
-  return (sha1(PASSWORD_KEY.$s));
-}
 
 if($_SERVER["REQUEST_METHOD"] != "POST"){
   setToken();
@@ -86,6 +63,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
   <meta property="og:type" content="chat"/>
   <meta property="og:description" content="BaaS（Milkcocoa）で作られたリアルタイムチャット"/>
   <title>新規ユーザー登録</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
 </head>
 
