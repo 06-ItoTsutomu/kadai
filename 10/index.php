@@ -33,22 +33,18 @@ foreach($dbh->query($sql) as $row){
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
   <script>
     var login_name="<?php echo h($me['name']); ?>";
-    console.log("てすと" + login_name);
   </script>
 </head>
 
 <body>
-<p>Logged in as <?php echo h($me["name"]); ?> | <a href="logout.php">[logout]</a></p>
-<h1>メンバー</h1>
-<ul>
+<p>ログイン中（<?php echo h($me["name"]); ?>） | <a href="logout.php">[ログアウトする]</a></p>
+<p class="mb0">メンバー</p>
+<ul class="mt0">
   <?php foreach ($users as $user): ?>
   <li><a href="profile.php?id=<?php echo h($user['id']); ?>"><?php echo h($user[name]); ?></a></li>
   <?php endforeach; ?>
 </ul>
 
-<div class="header">
-  <h1 class="logo">Line</h1>
-</div>
 
 <div class="container">
   <div class="postarea cf">

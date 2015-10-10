@@ -5,7 +5,7 @@ body{
   font-family:'Helvetica Neue', Helvetica, Arial, YuGothic, 'Yu Gothic', 游ゴシック体, '游ゴシック', 'ヒラギノ角ゴ ProN W3', 'Hiragino         Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
   padding-left:10px;
   padding-right:10px;
-  background-color:#d8ffff;
+  background-color:#f5faff;
 }
 
 #content{
@@ -24,10 +24,18 @@ body{
   margin-bottom:5px;
   padding:5px;
   width:70%;
-  clear:both
+  clear:both;
+  background:-webkit-linear-gradient(top, #efffff, #d5fffd);
+  background:-moz-linear-gradient(top, #efffff, #d5fffd);
+  background:-o-linear-gradient(top, #efffff, #d5fffd);
+  background:linear-gradient(to bottom, #efffff, #d5fffd);
 }
 .mypost{
   float:right;
+  background:-webkit-linear-gradient(top, #e2ffdd, #b2ff9c);
+  background:-moz-linear-gradient(top, #e2ffdd, #b2ff9c);
+  background:-o-linear-gradient(top, #e2ffdd, #b2ff9c);
+  background:linear-gradient(to bottom, #e2ffdd, #b2ff9c);
 }
 .post p{
   margin-top:0;
@@ -38,3 +46,9 @@ body{
   font-size:10px;
 }
 
+.mt0{
+  margin-top:0 !important;
+}
+.mb0{
+  margin-bottom:0 !important;
+}
