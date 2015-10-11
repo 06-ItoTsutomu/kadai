@@ -4,8 +4,8 @@ require_once("functions.php");
 
 session_start();
 
-if(empty($_SESSION["me"])){
-  header("Location:".SITE_URL."login.php");
+if (empty($_SESSION["me"])) {
+  header("Location:" . SITE_URL . "login.php");
   exit;
 }
 
@@ -13,8 +13,8 @@ $me = $_SESSION["me"];
 $dbh = connectDb();
 $users = array();
 
-$sql = "select * from account order by created desc";
-foreach($dbh->query($sql) as $row){
+$sql = "SELECT * FROM account ORDER BY created DESC";
+foreach ($dbh->query($sql) as $row) {
   array_push($users, $row);
 }
 
@@ -32,16 +32,17 @@ foreach($dbh->query($sql) as $row){
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
   <script>
-    var login_name="<?php echo h($me['name']); ?>";
+    var login_name = "<?php echo h($me['name']); ?>";
   </script>
 </head>
 
 <body>
 <p>ログイン中（<?php echo h($me["name"]); ?>） | <a href="logout.php">[ログアウトする]</a></p>
+
 <p class="mb0">メンバー</p>
 <ul class="mt0">
   <?php foreach ($users as $user): ?>
-  <li><a href="profile.php?id=<?php echo h($user['id']); ?>"><?php echo h($user[name]); ?></a></li>
+    <li><a href="profile.php?id=<?php echo h($user['id']); ?>"><?php echo h($user[name]); ?></a></li>
   <?php endforeach; ?>
 </ul>
 

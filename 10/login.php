@@ -4,22 +4,23 @@ require_once("functions.php");
 
 session_start();
 
-if(!empty($_SESSION["me"])){
-  header("Location:".SITE_URL);
+if (!empty($_SESSION["me"])) {
+  header("Location:" . SITE_URL);
   exit;
 }
 
-function getUser($email, $password, $dbh){
-  $sql = "select * from account where email = :email and password = :password limit 1";
+function getUser($email, $password, $dbh)
+{
+  $sql = "SELECT * FROM account WHERE email = :email AND password = :password LIMIT 1";
   $stmt = $dbh->prepare($sql);
-  $stmt->execute(array(":email"=>$email, ":password"=>getSha1Password($password)));
+  $stmt->execute(array(":email" => $email, ":password" => getSha1Password($password)));
   $user = $stmt->fetch();
   return $user ? $user : false;
 }
 
-if($_SERVER["REQUEST_METHOD"] != "POST"){
+if ($_SERVER["REQUEST_METHOD"] != "POST") {
   setToken();
-}else{
+} else {
   checkToken();
 
   $email = $_POST["email"];
@@ -27,30 +28,30 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 
   $dbh = connectDb();
 
-  $err=array();
+  $err = array();
 
-  if(!emailExists($email, $dbh)){
-    $err[email]="このメールアドレスは登録されていません";
+  if (!emailExists($email, $dbh)) {
+    $err[email] = "このメールアドレスは登録されていません";
   }
-  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    $err[email]="メールアドレスの形式が正しくないです";
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $err[email] = "メールアドレスの形式が正しくないです";
   }
-  if($email==""){
-    $err[email]="メールアドレスを入力して下さい";
-  }
-
-  if(!$me = getUser($email, $password,$dbh)){
-    $err[password]="パスワードとメールアドレスが一致しません";
+  if ($email == "") {
+    $err[email] = "メールアドレスを入力して下さい";
   }
 
-  if($password==""){
-    $err[password]="パスワードを入力して下さい";
+  if (!$me = getUser($email, $password, $dbh)) {
+    $err[password] = "パスワードとメールアドレスが一致しません";
   }
 
-  if(empty($err)){
+  if ($password == "") {
+    $err[password] = "パスワードを入力して下さい";
+  }
+
+  if (empty($err)) {
     session_regenerate_id(true);
     $_SESSION["me"] = $me;
-    header("Location:".SITE_URL);
+    header("Location:" . SITE_URL);
     exit;
   }
 }
@@ -79,8 +80,10 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 <div class="container">
   <form action="" method="post">
     <p>メールアドレス：<input type="text" name="email" value="<?php echo h($email); ?>"><?php echo h($err["email"]); ?></p>
+
     <p>パスワード：<input type="password" name="password" value=""><?php echo h($err["password"]); ?></p>
     <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
+
     <p><input type="submit" value="ログイン"><a href="signup.php">新規登録はこちら</a></p>
   </form>
 </div>

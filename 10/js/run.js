@@ -22,10 +22,10 @@ $(function () {
     if (message.value.date) {
       date_html = '<p class="post-date">' + escapeHTML(new Date(message.value.date).toLocaleString()) + '</p>';
     }
-    if(message.value.name == login_name){
-      $("#" + last_message).before('<div id="' + message.id + '" class="post mypost">' + name_html + message_html + date_html + '</div>');
-    }else{
-    $("#" + last_message).before('<div id="' + message.id + '" class="post">' + name_html + message_html + date_html + '</div>');
+    if (message.value.name == login_name) {
+      $("#" + last_message).before('<div id="' + message.id + '" class="post mypost">' + name_html + message_html + date_html + '<button class="delete" onclick="postDelete()">削除</button></div>');
+    } else {
+      $("#" + last_message).before('<div id="' + message.id + '" class="post">' + name_html + message_html + date_html + '</div>');
     }
 
     last_message = message.id;
@@ -47,9 +47,9 @@ $(function () {
     $("#content").val("");
   }
 
-  $('#post').click(function () {
+  $('#post').on('click', function () {
     post();
-  })
+  });
   $('#content').keydown(function (e) {
     if (e.which == 13) {
       post();
@@ -57,14 +57,9 @@ $(function () {
     }
   });
 
-  //$('#messages').each(".post",function(el){
-  // el.target.css("color","red");
-  //});
-  //$('.post').each(function(){
-  //  $(this).css("color","red");
-  //});
 });
 //インジェクション対策
 function escapeHTML(val) {
   return $('<div>').text(val).html();
 }
+

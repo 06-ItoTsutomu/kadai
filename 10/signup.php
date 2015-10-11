@@ -5,9 +5,9 @@ require_once("functions.php");
 session_start();
 
 
-if($_SERVER["REQUEST_METHOD"] != "POST"){
+if ($_SERVER["REQUEST_METHOD"] != "POST") {
   setToken();
-}else{
+} else {
   checkToken();
 
   $name = $_POST["name"];
@@ -16,27 +16,27 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 
   $dbh = connectDb();
 
-  $err=array();
+  $err = array();
 
-  if($name==""){
-    $err[name]="お名前を入力して下さい";
+  if ($name == "") {
+    $err[name] = "お名前を入力して下さい";
   }
-  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    $err[email]="メールアドレスの形式が正しくないです";
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $err[email] = "メールアドレスの形式が正しくないです";
   }
-  if(emailExists($email, $dbh)){
-    $err[email]="このメールアドレスは既に登録されています";
+  if (emailExists($email, $dbh)) {
+    $err[email] = "このメールアドレスは既に登録されています";
   }
-  if($email==""){
-    $err[email]="メールアドレスを入力して下さい";
+  if ($email == "") {
+    $err[email] = "メールアドレスを入力して下さい";
   }
-  if($password==""){
-    $err[password]="パスワードを入力して下さい";
+  if ($password == "") {
+    $err[password] = "パスワードを入力して下さい";
   }
 
 
-  if(empty($err)){
-    $sql = "insert into account
+  if (empty($err)) {
+    $sql = "INSERT INTO account
     (name, email, password, created, modified)
     VALUES
     (:name, :email, :password, now(), now())";
@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
       ":password" => getSha1Password($password)
     );
     $stmt->execute($params);
-    header("Location:".SITE_URL."login.php");
+    header("Location:" . SITE_URL . "login.php");
     exit;
   }
 }
@@ -75,9 +75,12 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 <div class="container">
   <form action="" method="post">
     <p>お名前：<input type="text" name="name" value="<?php echo h($name); ?>"><?php echo h($err["name"]); ?></p>
+
     <p>メールアドレス：<input type="text" name="email" value="<?php echo h($email); ?>"><?php echo h($err["email"]); ?></p>
+
     <p>パスワード：<input type="password" name="password" value=""><?php echo h($err["password"]); ?></p>
     <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
+
     <p><input type="submit" value="新規登録"><a href="index.php">戻る</a></p>
   </form>
 </div>
